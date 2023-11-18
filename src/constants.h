@@ -6,7 +6,7 @@
 #include "types.h"
 
 #define ENGINE_NAME                 "Alcor"
-#define ENGINE_VERSION              "0.1.6"
+#define ENGINE_VERSION              "0.1.7"
 #define ENGINE_AUTHOR               "Alexander Tian"
 
 constexpr double EXPLORATION_CONSTANT = 4;
