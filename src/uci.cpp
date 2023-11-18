@@ -1,6 +1,3 @@
-//
-// Created by Alex Tian on 9/30/2022.
-//
 
 #include <iostream>
 #include <algorithm>
@@ -15,8 +12,6 @@ void UCI::initialize_uci() const {
     Position& position = mcts_engine->position;
     position.set_fen(START_FEN);
     mcts_engine->new_game();
-
-    // std::cout << engine->transposition_table.size() << " number of hash entries initialized" << std::endl;
 }
 
 

@@ -1,9 +1,6 @@
-//
-// Created by Alex Tian on 10/4/2022.
-//
 
-#ifndef ANTARESCHESSENGINE_ZOBRIST_H
-#define ANTARESCHESSENGINE_ZOBRIST_H
+#ifndef ALCOR_ZOBRIST_H
+#define ALCOR_ZOBRIST_H
 
 #include <random>
 #include "constants.h"
@@ -58,4 +55,4 @@ public:
 
 ZobristKeysClass ZobristHashKeys = ZobristKeysClass();
 
-#endif //ANTARESCHESSENGINE_ZOBRIST_H
+#endif //ALCOR_ZOBRIST_H

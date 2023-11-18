@@ -1,6 +1,4 @@
-//
-// Created by Alex Tian on 9/18/2022.
-//
+
 
 #ifndef ANTARESCHESSENGINE_PERFT_H
 #define ANTARESCHESSENGINE_PERFT_H

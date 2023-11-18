@@ -1,6 +1,3 @@
-//
-// Created by Alexander Tian on 7/31/23.
-//
 
 #include <iostream>
 #include <cmath>

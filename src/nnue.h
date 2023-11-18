@@ -1,6 +1,3 @@
-//
-// Created by Alexander Tian on 6/16/23.
-//
 
 #ifndef ALCOR_NNUE_H
 #define ALCOR_NNUE_H

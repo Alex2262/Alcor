@@ -1,6 +1,3 @@
-//
-// Created by Alexander Tian on 5/4/23.
-//
 
 #include <vector>
 #include <utility>

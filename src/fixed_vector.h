@@ -1,11 +1,6 @@
-//
-// Created by Alexander Tian on 6/24/23.
-//
 
 #ifndef ALCOR_FIXED_VECTOR_H
 #define ALCOR_FIXED_VECTOR_H
-
-// A lot of code in here is influenced by Conor Anstey (Ciekce)
 
 #include <cstdint>
 #include <cstring>

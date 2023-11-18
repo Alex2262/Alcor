@@ -1,6 +1,3 @@
-//
-// Created by Alexander Tian on 7/31/23.
-//
 
 #ifndef ALCOR_MCTS_H
 #define ALCOR_MCTS_H
