@@ -66,7 +66,7 @@ void UCI::parse_position() {
     int next_idx;
 
     if (tokens[1] == "startpos") {
-        mcts_engine->temp_fifty_move = position.set_fen(START_FEN);
+        mcts_engine->fifty_move = position.set_fen(START_FEN);
         next_idx = 2;
     }
 
@@ -77,7 +77,7 @@ void UCI::parse_position() {
             fen += " ";
         }
 
-        mcts_engine->temp_fifty_move = position.set_fen(fen);
+        mcts_engine->fifty_move = position.set_fen(fen);
         next_idx = 8;
     }
 
@@ -92,7 +92,7 @@ void UCI::parse_position() {
 
         Move move = Move(position, tokens[i]);
 
-        position.make_move(move, position.state_stack[0], mcts_engine->temp_fifty_move);
+        position.make_move(move, position.state_stack[0], mcts_engine->fifty_move);
         last_move = move;
 
         if (i - (next_idx + 1) >= current_move_idx) {

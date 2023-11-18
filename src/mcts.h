@@ -49,7 +49,7 @@ public:
     uint32_t root_node_index = 0;
     int ply = 0;
 
-    PLY_TYPE temp_fifty_move = 0;
+    PLY_TYPE fifty_move = 0;
 
     Tree tree{};
 

@@ -10,7 +10,7 @@
 void MCTS::new_game() {
     tree.graph.clear();
     root_node_index = 0;
-    temp_fifty_move = 0;
+    fifty_move = 0;
 
     tree.graph.emplace_back(root_node_index, NO_MOVE);
 }
@@ -37,7 +37,7 @@ void MCTS::print_info() {
     std::vector<Move> attempted_moves{};
 
     while(true) {
-        position.set_state(position.state_stack[ply], temp_fifty_move);
+        position.set_state(position.state_stack[ply], fifty_move);
 
         uint32_t best_node_index = get_best_node();
         if (tree.graph[best_node_index].visits < 2) break;
@@ -47,7 +47,7 @@ void MCTS::print_info() {
         root_node_index = best_node_index;
         if (tree.graph[root_node_index].children_end - tree.graph[root_node_index].children_start == 0) break;
 
-        position.make_move(tree.graph[root_node_index].last_move, position.state_stack[ply], temp_fifty_move);
+        position.make_move(tree.graph[root_node_index].last_move, position.state_stack[ply], fifty_move);
         attempted_moves.push_back(tree.graph[root_node_index].last_move);
 
         ply++;
@@ -55,7 +55,7 @@ void MCTS::print_info() {
 
     for (int i = attempted_moves.size() - 1; i >= 0; i--) {
         ply--;
-        position.undo_move(attempted_moves[i], position.state_stack[ply], temp_fifty_move);
+        position.undo_move(attempted_moves[i], position.state_stack[ply], fifty_move);
     }
 
     root_node_index = original_root_node_index;
@@ -87,7 +87,7 @@ void MCTS::print_info() {
 void MCTS::descend_to_root(uint32_t node_index) {
     while (node_index != root_node_index && ply > 0) {
         ply--;
-        position.undo_move(tree.graph[node_index].last_move, position.state_stack[ply], temp_fifty_move);
+        position.undo_move(tree.graph[node_index].last_move, position.state_stack[ply], fifty_move);
         node_index = tree.graph[node_index].parent;
     }
 }
@@ -183,8 +183,8 @@ uint32_t MCTS::selection() {
 
         leaf_node_index = select_best_child(leaf_node_index);
 
-        position.set_state(position.state_stack[ply], temp_fifty_move);
-        position.make_move(tree.graph[leaf_node_index].last_move, position.state_stack[ply], temp_fifty_move);
+        position.set_state(position.state_stack[ply], fifty_move);
+        position.make_move(tree.graph[leaf_node_index].last_move, position.state_stack[ply], fifty_move);
 
         depth++;
         ply++;
@@ -200,14 +200,14 @@ uint32_t MCTS::selection() {
 void MCTS::expansion(uint32_t node_index) {
 
     position.get_pseudo_legal_moves(position.scored_moves[ply]);
-    position.set_state(position.state_stack[ply], temp_fifty_move);
+    position.set_state(position.state_stack[ply], fifty_move);
     tree.graph[node_index].children_start = tree.graph.size();
 
     for (ScoredMove scored_move : position.scored_moves[ply]) {
 
-        bool attempt = position.make_move(scored_move.move, position.state_stack[ply], temp_fifty_move);
+        bool attempt = position.make_move(scored_move.move, position.state_stack[ply], fifty_move);
 
-        position.undo_move(scored_move.move, position.state_stack[ply], temp_fifty_move);
+        position.undo_move(scored_move.move, position.state_stack[ply], fifty_move);
 
         if (!attempt) continue;
 
@@ -281,18 +281,19 @@ void MCTS::search() {
 
         if (tree.graph[selected_node_index].visits >= 2) {
 
-            if (selected_node_index != root_node_index && detect_repetition(position.hash_key)) node_result = DRAW_RESULT;
+            if (selected_node_index != root_node_index &&
+                (detect_repetition(position.hash_key) || fifty_move == 100)) node_result = DRAW_RESULT;
             else {
                 tree_hashes.insert(position.hash_key);
                 expansion(selected_node_index);
 
                 if (tree.graph[selected_node_index].children_end > tree.graph[selected_node_index].children_start) {
-                    position.set_state(position.state_stack[ply], temp_fifty_move);
+                    position.set_state(position.state_stack[ply], fifty_move);
 
                     int random_index = rand() % (tree.graph[selected_node_index].children_end - tree.graph[selected_node_index].children_start);
                     selected_node_index = tree.graph[selected_node_index].children_start + random_index;
 
-                    position.make_move(tree.graph[selected_node_index].last_move, position.state_stack[ply], temp_fifty_move);
+                    position.make_move(tree.graph[selected_node_index].last_move, position.state_stack[ply], fifty_move);
                     ply++;
 
                     if (detect_repetition(position.hash_key)) node_result = DRAW_RESULT;
