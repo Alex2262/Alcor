@@ -2,8 +2,8 @@
 // Created by Alexander Tian on 7/31/23.
 //
 
-#ifndef ALCORCHESSENGINE_MCTS_H
-#define ALCORCHESSENGINE_MCTS_H
+#ifndef ALCOR_MCTS_H
+#define ALCOR_MCTS_H
 
 #include <unordered_set>
 #include "constants.h"
@@ -72,4 +72,4 @@ public:
     void flatten_tree();
 };
 
-#endif //ALCORCHESSENGINE_MCTS_H
+#endif //ALCOR_MCTS_H

@@ -2,8 +2,8 @@
 // Created by Alexander Tian on 6/16/23.
 //
 
-#ifndef ALCORCHESSENGINE_NNUE_H
-#define ALCORCHESSENGINE_NNUE_H
+#ifndef ALCOR_NNUE_H
+#define ALCOR_NNUE_H
 
 #include <cstring>
 #include <array>
@@ -100,4 +100,4 @@ public:
         for (size_t i = 0; i < LAYER1_SIZE; ++i) input[i] -= nnue_parameters.feature_weights[offset + i];
     }
 };
-#endif //ALCORCHESSENGINE_NNUE_H
+#endif //ALCOR_NNUE_H

@@ -2,8 +2,8 @@
 // Created by Alexander Tian on 6/23/23.
 //
 
-#ifndef ALCORCHESSENGINE_BITBOARD_H
-#define ALCORCHESSENGINE_BITBOARD_H
+#ifndef ALCOR_BITBOARD_H
+#define ALCOR_BITBOARD_H
 
 #include <cstdint>
 #include <cassert>
@@ -101,4 +101,4 @@ constexpr Square operator+(Square s, Direction d) {
 [[nodiscard]] uint32_t popcount(BITBOARD bitboard);
 [[nodiscard]] Square poplsb(BITBOARD& bitboard);
 
-#endif //ALCORCHESSENGINE_BITBOARD_H
+#endif //ALCOR_BITBOARD_H

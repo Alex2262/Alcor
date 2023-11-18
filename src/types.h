@@ -1,7 +1,7 @@
 
 
-#ifndef ALCORCHESSENGINE_TYPES_H
-#define ALCORCHESSENGINE_TYPES_H
+#ifndef ALCOR_TYPES_H
+#define ALCOR_TYPES_H
 
 #include <cstdint>
 
@@ -102,4 +102,4 @@ using PLY_TYPE = int16_t;
 using HASH_TYPE = uint64_t;
 using SCORE_TYPE = int32_t;
 
-#endif //ALCORCHESSENGINE_TYPES_H
+#endif //ALCOR_TYPES_H

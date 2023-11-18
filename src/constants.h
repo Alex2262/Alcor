@@ -1,6 +1,6 @@
 
-#ifndef ALCORCHESSENGINE_CONSTANTS_H
-#define ALCORCHESSENGINE_CONSTANTS_H
+#ifndef ALCOR_CONSTANTS_H
+#define ALCOR_CONSTANTS_H
 
 #include <cstdint>
 #include "types.h"
@@ -61,4 +61,4 @@ constexpr char PIECE_MATCHER[12] = {'P', 'N', 'B', 'R', 'Q', 'K',
 
 constexpr int MVV_LVA_VALUES[6] = {  87, 390, 429, 561,1234,   0};
 
-#endif //ALCORCHESSENGINE_CONSTANTS_H
+#endif //ALCOR_CONSTANTS_H

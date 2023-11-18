@@ -2,8 +2,8 @@
 // Created by Alexander Tian on 6/24/23.
 //
 
-#ifndef ALCORCHESSENGINE_FIXED_VECTOR_H
-#define ALCORCHESSENGINE_FIXED_VECTOR_H
+#ifndef ALCOR_FIXED_VECTOR_H
+#define ALCOR_FIXED_VECTOR_H
 
 // A lot of code in here is influenced by Conor Anstey (Ciekce)
 
@@ -43,4 +43,4 @@ public:
     }
 };
 
-#endif //ALCORCHESSENGINE_FIXED_VECTOR_H
+#endif //ALCOR_FIXED_VECTOR_H

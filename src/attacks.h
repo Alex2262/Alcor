@@ -2,8 +2,8 @@
 // Created by Alexander Tian on 6/23/23.
 //
 
-#ifndef ALCORCHESSENGINE_ATTACKS_H
-#define ALCORCHESSENGINE_ATTACKS_H
+#ifndef ALCOR_ATTACKS_H
+#define ALCOR_ATTACKS_H
 
 #include <array>
 #include "bitboard.h"
@@ -328,4 +328,4 @@ constexpr BITBOARD get_pawn_bitboard_attacks(BITBOARD pawns, Color color) {
 }
 
 
-#endif //ALCORCHESSENGINE_ATTACKS_H
+#endif //ALCOR_ATTACKS_H
