@@ -33,13 +33,18 @@ class MCTS {
 public:
     MCTS() = default;
 
+    bool stopped = true;
+
+    PLY_TYPE max_depth = MAX_DEPTH;
+    uint64_t max_time = MAX_TIME;
+    uint64_t max_nodes = MAX_ITERATIONS;
+
     Position position{};
 
     uint64_t start_time = 0;
     PLY_TYPE seldepth = 0;
-    int iterations = 0;
-
-    uint64_t max_time = MAX_TIME;
+    double average_depth = 1;
+    uint64_t nodes = 0;
 
     uint32_t root_node_index = 0;
     int ply = 0;

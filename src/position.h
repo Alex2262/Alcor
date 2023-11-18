@@ -71,9 +71,9 @@ public:
     Square ep_square = NO_SQUARE;
     HASH_TYPE hash_key = 0;
 
-    std::array<State_Struct, TOTAL_MAX_DEPTH> state_stack{};
+    std::array<State_Struct, MAX_DEPTH> state_stack{};
 
-    std::array<FixedVector<ScoredMove, MAX_MOVES>, TOTAL_MAX_DEPTH> scored_moves{};
+    std::array<FixedVector<ScoredMove, MAX_MOVES>, MAX_DEPTH> scored_moves{};
 
     void clear_state_stack();
     void set_state(State_Struct& state_struct, PLY_TYPE fifty_move) const;

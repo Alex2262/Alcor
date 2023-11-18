@@ -10,8 +10,8 @@
 #define ENGINE_AUTHOR               "Alexander Tian"
 
 constexpr double EXPLORATION_CONSTANT = 4;
-constexpr uint64_t MAX_TIME = 5000;
-constexpr uint64_t MAX_ITERATIONS = 10'000'000;
+constexpr uint64_t MAX_TIME = 60000;
+constexpr uint64_t MAX_ITERATIONS = 100'000'000;
 constexpr int DRAW_RESULT = 2;
 constexpr int NO_RESULT = 3;
 
@@ -21,7 +21,7 @@ constexpr double CP_SCALE = 400.0;
 #define FAIL_HIGH_STATS_COUNT       5
 #define ALPHA_RAISE_STATS_COUNT     5
 
-#define BENCH_DEPTH                 14
+#define BENCH_DEPTH                 8
 
 #define START_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - "
 #define KIWIPETE_FEN "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - "
@@ -37,8 +37,7 @@ constexpr SCORE_TYPE NO_EVALUATION = 500000;
 constexpr SCORE_TYPE MATE_SCORE = 100000;
 constexpr SCORE_TYPE MATE_BOUND = 99000;
 
-#define MAX_AB_DEPTH        256
-#define TOTAL_MAX_DEPTH     512
+#define MAX_DEPTH        256
 #define MAX_TT_SIZE         2666666
 
 #define HASH_FLAG_EXACT     0

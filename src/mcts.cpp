@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <queue>
+#include <cmath>
 #include "mcts.h"
 #include "see.h"
 
@@ -70,10 +71,11 @@ void MCTS::print_info() {
             (std::chrono::time_point_cast<std::chrono::milliseconds>(time).time_since_epoch()).count();
 
     auto elapsed_time = current_time - start_time;
-    uint64_t nps = iterations / (elapsed_time / 1000.0);
+    uint64_t nps = nodes / (elapsed_time / 1000.0);
 
-    std::cout << "info nodes " << iterations
-              << " depth " << seldepth
+    std::cout << "info nodes " << nodes
+              << " depth " << std::lround(average_depth + 0.5)
+              << " seldepth " << seldepth
               << " score cp " << score
               << " time " << elapsed_time
               << " nps " << nps
@@ -170,7 +172,7 @@ uint32_t MCTS::selection() {
 
     tree_hashes.clear();
 
-    int depth = 0;
+    PLY_TYPE depth = 0;
     while (true) {
 
         uint32_t n_children = tree.graph[leaf_node_index].children_end - tree.graph[leaf_node_index].children_start;
@@ -188,6 +190,8 @@ uint32_t MCTS::selection() {
         ply++;
 
     }
+
+    average_depth = (average_depth * (static_cast<double>(nodes) - 1.0) + depth) / static_cast<double>(nodes);
 
     seldepth = std::max<PLY_TYPE>(seldepth, depth);
     return leaf_node_index;
@@ -255,7 +259,10 @@ uint32_t MCTS::get_best_node() {
 
 void MCTS::search() {
     seldepth = 0;
-    iterations = 0;
+    nodes = 0;
+    average_depth = 0.0;
+    seldepth = 0;
+    stopped = false;
 
     flatten_tree();
 
@@ -265,12 +272,8 @@ void MCTS::search() {
 
     uint32_t selected_node_index = root_node_index;
 
-    for (int iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
-        iterations = iteration;
+    for (nodes = 1; nodes <= max_nodes; nodes++) {
 
-        // std::cout << "iteration " << iterations << std::endl;
-
-        // std::cout << "selection" << std::endl;
         descend_to_root(selected_node_index);
         selected_node_index = selection();
 
@@ -306,7 +309,9 @@ void MCTS::search() {
         // std::cout << "back propagation" << std::endl;
         back_propagation(selected_node_index, evaluation, node_result);
 
-        if ((iteration & 255) == 0) {
+        //
+
+        if ((nodes % 2048) == 0) {
             auto time = std::chrono::high_resolution_clock::now();
             uint64_t current_time = std::chrono::duration_cast<std::chrono::milliseconds>
                     (std::chrono::time_point_cast<std::chrono::milliseconds>(time).time_since_epoch()).count();
@@ -316,10 +321,13 @@ void MCTS::search() {
             }
         }
 
-        if ((iteration % 10000) == 0 && iteration != 0) {
+        if ((nodes % 30000) == 0) {
             descend_to_root(selected_node_index);
             print_info();
         }
+
+        if (std::lround(average_depth + 0.5) >= max_depth) break;
+        if (stopped) break;
     }
 
     descend_to_root(selected_node_index);

@@ -42,6 +42,8 @@ add_executable(Alcor
         src/nnue.h
         src/incbin.h
         src/mcts.h
-        src/mcts.cpp)
+        src/mcts.cpp
+        src/bench.cpp
+        src/bench.h)
 
 target_link_libraries(Alcor Threads::Threads)

@@ -6,6 +6,7 @@
 #include "useful.h"
 #include "move.h"
 #include "perft.h"
+#include "bench.h"
 
 void UCI::initialize_uci() const {
 
@@ -121,6 +122,8 @@ void UCI::parse_go() {
 
         if (type == "depth") d = static_cast<PLY_TYPE>(value);
 
+        else if (type == "nodes") mcts_engine->max_nodes = value;
+
         else if (type == "perft") perft_depth = static_cast<PLY_TYPE>(value);
 
         else if (type == "movetime") movetime = static_cast<double>(value);
@@ -200,6 +203,10 @@ void UCI::uci_loop() {
 
         else if (tokens[0] == "go") {
             parse_go();
+        }
+
+        else if (tokens[0] == "bench") {
+            run_bench(*mcts_engine, BENCH_DEPTH);
         }
     }
 }

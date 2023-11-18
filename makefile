@@ -2,8 +2,8 @@
 # engine name
 EXE      = Alcor
 
-SOURCES      := evaluation.cpp main.cpp move.cpp perft.cpp position.cpp useful.cpp uci.cpp see.cpp bitboard.cpp \
-				move_ordering.cpp
+SOURCES      := main.cpp move.cpp perft.cpp position.cpp useful.cpp uci.cpp see.cpp bitboard.cpp \
+				bench.cpp mcts.cpp nnue.cpp
 
 TEMPDIR      := tmp/
 CXXFLAGS     := -O3 -std=c++20 -Wall -Wextra -pedantic -DNDEBUG -flto
