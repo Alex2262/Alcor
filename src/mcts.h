@@ -18,7 +18,7 @@ public:
     Node(uint32_t c_parent, Move c_last_move) {
         parent = c_parent;
         win_count = 0;
-        visits = 1;
+        visits = 0;
         last_move = c_last_move;
     }
 };

@@ -62,9 +62,10 @@ void MCTS::print_info() {
 
     uint32_t best_node_index = get_best_node();
 
-    auto score = static_cast<int>(tree.graph[best_node_index].win_count /
-                                  static_cast<double>(tree.graph[best_node_index].visits)
-                                  * CP_SCALE);
+    auto eval = static_cast<double>(tree.graph[best_node_index].win_count) /
+                static_cast<double>(tree.graph[best_node_index].visits);
+
+    auto score = static_cast<int>(-std::log(1 / std::clamp<double>(eval, -1.0, 1.0) - 1) * SCALE);
 
     auto time = std::chrono::high_resolution_clock::now();
     uint64_t current_time = std::chrono::duration_cast<std::chrono::milliseconds>
@@ -153,7 +154,11 @@ uint32_t MCTS::select_best_child(uint32_t node_index) {
 
         double exploration_score = EXPLORATION_CONSTANT * std::sqrt(static_cast<double>(node.visits));
         double prior_score = policies[i] * (exploration_score / (static_cast<double>(1 + child_node.visits)));
-        double value_score = static_cast<double>(child_node.win_count) / static_cast<double>(child_node.visits);
+        double value_score = child_node.visits == 0 ? 0 :
+                static_cast<double>(child_node.win_count) /
+                static_cast<double>(child_node.visits);
+
+        // std::cout << child_node.win_count << " " << child_node.visits << std::endl;
 
         double puct = child_node.visits == 0 ?
                 exploration_score * policies[i] + 0.5 :  // FPU
@@ -219,28 +224,28 @@ void MCTS::expansion(uint32_t node_index) {
 }
 
 double MCTS::evaluate_mcts() {
-    return tanh(position.nnue_state.evaluate(position.side) / CP_SCALE);
+    return 1.0 / (1.0 + std::exp(-(position.nnue_state.evaluate(position.side) / CP_SCALE)));
 }
 
 void MCTS::back_propagation(uint32_t node_index, double evaluation, int result) {
 
+    double p_result = result == DRAW_RESULT ? 0.5 :
+                      result == NO_RESULT ? evaluation :
+                      -1.0;
+    // std::cout << p_result << std::endl;
+
     uint32_t current_node_index = node_index;
-    int current_side = position.side ^ 1;
     while (true) {
         Node& current_node = tree.graph[current_node_index];
 
+        p_result = 1 - p_result;
+
         current_node.visits++;
-        if (current_side == result) current_node.win_count += 5;
-        else if ((current_side ^ 1) == result) current_node.win_count -= 5;
-        else if (result != DRAW_RESULT) {
-            if (current_side == position.side) current_node.win_count += evaluation;
-            else current_node.win_count -= evaluation;
-        }
+        current_node.win_count += p_result;
 
         if (current_node.parent == current_node_index) break;  // Hit root
 
         current_node_index = current_node.parent;
-        current_side ^= 1;
     }
 }
 
