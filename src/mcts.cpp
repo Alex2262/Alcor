@@ -237,16 +237,17 @@ double MCTS::evaluate_mcts() {
 
 void MCTS::back_propagation(uint32_t node_index, double evaluation, int result) {
 
+    double max_result = result == DRAW_RESULT || result == NO_RESULT ? 1.0 : 2.0;
     double p_result = result == DRAW_RESULT ? 0.5 :
                       result == NO_RESULT ? evaluation :
-                      -1.0;
-    // std::cout << p_result << std::endl;
+                      0.0;
+
 
     uint32_t current_node_index = node_index;
     while (true) {
         Node& current_node = tree.graph[current_node_index];
 
-        p_result = 1 - p_result;
+        p_result = max_result - p_result;
 
         current_node.visits++;
         current_node.win_count += p_result;
