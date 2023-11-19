@@ -53,7 +53,7 @@ void MCTS::print_info() {
         ply++;
     }
 
-    for (auto i = attempted_moves.size() - 1; i >= 0; i--) {
+    for (int i = static_cast<int>(attempted_moves.size()) - 1; i >= 0; i--) {
         ply--;
         position.undo_move(attempted_moves[i], position.state_stack[ply], fifty_move);
     }
