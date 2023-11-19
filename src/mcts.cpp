@@ -110,7 +110,7 @@ uint32_t MCTS::select_best_child(uint32_t node_index) {
         uint32_t child_node_index = tree.graph[node_index].children_start + i;
         Node child_node = tree.graph[child_node_index];
 
-        double policy = 1.0;
+        double policy = 0.0;
 
         Move last_move = child_node.last_move;
         Piece selected = position.board[last_move.origin()];
@@ -119,23 +119,21 @@ uint32_t MCTS::select_best_child(uint32_t node_index) {
         auto selected_type = get_piece_type(selected, position.side);
 
         if (last_move.type() == MOVE_TYPE_PROMOTION) {
-            if (last_move.promotion_type() == PROMOTION_QUEEN) policy += 10.0;
-            policy += 1.0;
+            if (last_move.promotion_type() == PROMOTION_QUEEN) policy += 2.0;
         }
 
         if (last_move.is_capture(position)) {
 
             auto occupied_type = get_piece_type(occupied, ~position.side);
 
-            policy += (MVV_LVA_VALUES[occupied_type] - MVV_LVA_VALUES[selected_type]) / 1200.0;
-            policy += 4;
+            policy += (static_cast<double>(occupied_type) - static_cast<double>(selected_type)) / 5.0;
+            // std::cout << "WOAH " << (static_cast<double>(occupied_type) - static_cast<double>(selected_type)) / 5.0 << std::endl;
+            policy += 2;
         }
 
-        if (get_static_exchange_evaluation(position, last_move, -108)) {
-            policy += 3;
-        } else policy -= 2;
+        if (get_static_exchange_evaluation(position, last_move, -108)) policy += 2;
 
-        policy = std::max(policy, 0.1);
+        // policy = std::exp(std::max(policy, 0.1));
 
         policies[i] = policy;
         policy_sum += policy;
