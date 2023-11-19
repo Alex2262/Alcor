@@ -14,6 +14,7 @@ public:
     double win_count = 0;
     int visits = 0;
     Move last_move;
+    double policy = 0.0;
 
     Node(uint32_t c_parent, Move c_last_move) {
         parent = c_parent;
@@ -62,6 +63,9 @@ public:
 
     void descend_to_root(uint32_t node_index);
     bool detect_repetition(HASH_TYPE hash);
+
+    double get_policy(uint32_t node_index);
+    void set_children_policies(uint32_t node_index);
     uint32_t select_best_child(uint32_t node_index);
     uint32_t selection();
     void expansion(uint32_t node_index);
