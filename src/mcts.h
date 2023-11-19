@@ -12,7 +12,7 @@ public:
     uint32_t children_start = 0;
     uint32_t children_end = 0;
     double win_count = 0;
-    int visits = 1;
+    int visits = 0;
     Move last_move;
 
     Node(uint32_t c_parent, Move c_last_move) {

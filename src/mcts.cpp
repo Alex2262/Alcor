@@ -153,10 +153,13 @@ uint32_t MCTS::select_best_child(uint32_t node_index) {
         uint32_t child_node_index = tree.graph[node_index].children_start + i;
         Node child_node = tree.graph[child_node_index];
 
-        double prior_score = EXPLORATION_CONSTANT * (std::sqrt(node.visits) / (1 + child_node.visits)) * policies[i];
+        double exploration_score = EXPLORATION_CONSTANT * std::sqrt(static_cast<double>(node.visits));
+        double prior_score = policies[i] * (exploration_score / (static_cast<double>(1 + child_node.visits)));
         double value_score = static_cast<double>(child_node.win_count) / static_cast<double>(child_node.visits);
 
-        double puct = prior_score + value_score;
+        double puct = child_node.visits == 0 ?
+                exploration_score * policies[i] + 0.5 :  // FPU
+                prior_score + value_score;
 
         if (puct > best_puct) {
             best_puct = puct;
@@ -279,7 +282,7 @@ void MCTS::search() {
 
         int node_result = NO_RESULT;
 
-        if (tree.graph[selected_node_index].visits >= 2) {
+        if (tree.graph[selected_node_index].visits > 0) {
 
             if (selected_node_index != root_node_index &&
                 (detect_repetition(position.hash_key) || fifty_move == 100)) node_result = DRAW_RESULT;
