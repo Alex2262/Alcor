@@ -107,6 +107,7 @@ double MCTS::get_policy(uint32_t node_index) {
     Move last_move = child_node.last_move;
     Piece selected = position.board[last_move.origin()];
     Piece occupied = position.board[last_move.target()];
+    Color color = get_color(position.board[last_move.origin()]);
 
     auto selected_type = get_piece_type(selected, position.side);
 
@@ -123,6 +124,16 @@ double MCTS::get_policy(uint32_t node_index) {
     }
 
     if (get_static_exchange_evaluation(position, last_move, -108)) policy += 3;
+    if (selected_type == PAWN) {
+        policy += 0.1;
+        BITBOARD opp_pawns = position.get_pieces(PAWN, ~color);
+        if (!(passed_pawn_masks[color][last_move.origin()] & opp_pawns)) {
+            auto num_pieces = popcount(position.all_pieces);
+            policy += 0.3 + 0.02 * (32 - num_pieces);
+        }
+    }
+
+    policy = std::max(policy, 0.0);
 
     return std::exp(policy);
 }
