@@ -124,13 +124,31 @@ double MCTS::get_policy(uint32_t node_index) {
     }
 
     if (get_static_exchange_evaluation(position, last_move, -108)) policy += 3;
+
+    auto num_pieces = static_cast<int>(popcount(position.all_pieces));
     if (selected_type == PAWN) {
         policy += 0.1;
         BITBOARD opp_pawns = position.get_pieces(PAWN, ~color);
         if (!(passed_pawn_masks[color][last_move.origin()] & opp_pawns)) {
-            auto num_pieces = popcount(position.all_pieces);
             policy += 0.3 + 0.02 * (32 - num_pieces);
         }
+    }
+
+    else if (selected_type == KNIGHT || selected_type == BISHOP) {
+        policy += 0.01 * num_pieces;
+    }
+
+    else if (selected_type == ROOK) {
+        policy += 0.01 * std::clamp<int>(32 - num_pieces, 10, 20);
+    }
+
+    else if (selected_type == QUEEN) {
+        policy += 0.02 * std::clamp<int>(32 - num_pieces, 5, 20);
+    }
+
+    else if (selected_type == KING) {
+        if (last_move.type() == MOVE_TYPE_CASTLE) policy += 0.3;
+        else policy += 0.03 * std::clamp<int>(32 - num_pieces, 5, 26);
     }
 
     policy = std::max(policy, 0.0);
