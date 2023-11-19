@@ -133,7 +133,7 @@ uint32_t MCTS::select_best_child(uint32_t node_index) {
 
         if (get_static_exchange_evaluation(position, last_move, -108)) policy += 2;
 
-        // policy = std::exp(std::max(policy, 0.1));
+        policy = std::exp(policy);
 
         policies[i] = policy;
         policy_sum += policy;
